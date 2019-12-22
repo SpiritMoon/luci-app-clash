@@ -190,25 +190,6 @@ function do_update()
 end
 
 
-function get_log()
-	local logfile="/tmp/clash_update.log"
-	if (logfile==nil) then
-		luci.http.write("no log available\n")
-		return
-	elseif not fs.access(logfile) then
-		luci.http.write("log file not created\n")
-		return
-	end
-	luci.http.prepare_content("text/plain; charset=utf-8")
-	local fdp=tonumber(fs.readfile("/var/run/clashlog")) or 0
-	local f=io.open(logfile, "r+")
-	f:seek("set",fdp)
-	local a=f:read(2048000) or ""
-	fdp=f:seek()
-	fs.writefile("/var/run/clashlog",tostring(fdp))
-	f:close()
-	luci.http.write(a)
-end
 
 
 function check_update_log()
