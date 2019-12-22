@@ -133,6 +133,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
 	$(INSTALL_DIR) $(1)/usr/share/
 	$(INSTALL_DIR) $(1)/usr/share/clash
+	$(INSTALL_DIR) $(1)/usr/share/clash/yac
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard/img
 	$(INSTALL_DIR) $(1)/usr/share/clash/dashboard/js
@@ -173,6 +174,7 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_BIN) ./root/usr/share/clash/v2ssr.sh $(1)/usr/share/clash/
 	$(INSTALL_BIN) ./root/usr/share/clash/server.list $(1)/usr/share/clash/
 
+	$(INSTALL_BIN) ./root/usr/share/clash/yac/* $(1)/usr/share/clash/yac/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/index.html $(1)/usr/share/clash/dashboard/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/main.aee3e3fc24cd46786598.css $(1)/usr/share/clash/dashboard/
 	$(INSTALL_BIN) ./root/usr/share/clash/dashboard/img/33343e6117c37aaef8886179007ba6b5.png $(1)/usr/share/clash/dashboard/img/
