@@ -468,9 +468,10 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 		fi
 		
 	fi
-	
-	sleep 1
+	ln -s /usr/share/clash/yac /www/clash
 
+	sleep 1
+	
 	
 	if [ "${lang}" == "en" ];then
 		echo "Restarting Firewall rules " >$REAL_LOG 
@@ -638,7 +639,8 @@ lang=$(uci get luci.main.lang 2>/dev/null)
   	  	del_cron >/dev/null 2>&1
 	        sleep 1
 		
-		
+		rm -rf /www/clash >/dev/null 2>&1
+
 	 	echo "" > /tmp/clash.log >/dev/null 2>&1
 
 		echo "0" > /usr/share/clash/logstatus_check >/dev/null 2>&1
