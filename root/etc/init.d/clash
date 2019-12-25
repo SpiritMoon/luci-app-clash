@@ -477,17 +477,6 @@ if  [  -f $CONFIG_YAML ] && [ "$(ls -l $CONFIG_YAML|awk '{print int($5/1024)}')"
 	ln -s /usr/share/clash/yac /www/clash
 
 	sleep 1
-	
-	
-	if [ "${lang}" == "en" ];then
-		echo "Restarting Firewall rules " >$REAL_LOG 
-	elif [ "${lang}" == "zh_cn" ];then
-    	echo "重启防火墙规则" >$REAL_LOG
-	fi	
-	uci commit firewall	
-	/etc/init.d/firewall restart >/dev/null 2>&1
-
-	sleep 1
 
 	if [ "${lang}" == "en" ];then
 		echo "Setting up clash iptables rules" >$REAL_LOG 
