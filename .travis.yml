@@ -21,18 +21,6 @@ script:
 - cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
 - make package/luci-app-clash/compile V=99
 
-- rm -rf $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/luci-app-clash
-- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
-- git clone -b official-openwrt https://github.com/frainzy1477/luci-app-clash.git 
-- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
-- make package/luci-app-clash/compile V=99
-
-- rm -rf $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/luci-app-clash
-- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
-- git clone -b koolshare-lede-openwrt https://github.com/frainzy1477/luci-app-clash.git 
-- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
-- make package/luci-app-clash/compile V=99
-
 before_deploy: git fetch --tags
 deploy:
   provider: releases
