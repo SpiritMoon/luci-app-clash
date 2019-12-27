@@ -1,26 +1,38 @@
 sudo: false
-notifications:
-  email: false
 language: c
 compiler: gcc
 env:
   global:
     - NAME=luci-app-clash
+  matrix:
+  - SDK_URL=https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+
 install:
-- wget -c https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+- wget -c $SDK_URL
 - cd $TRAVIS_BUILD_DIR
-- export FILE=$TRAVIS_BUILD_DIR/$(basename https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz)
+- export FILE=$TRAVIS_BUILD_DIR/$(basename $SDK_URL)
 - file $FILE
 - tar xvJf $FILE
 
-
 script:
-#- git clone https://github.com/frainzy1477/luci-app-clash.git
 - wget -q https://raw.githubusercontent.com/frainzy1477/luci-app-clash/New-LuciMaster-Lean/config -O 2>&1 >1 $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
 - cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
 - git clone -b New-LuciMaster-Lean https://github.com/frainzy1477/luci-app-clash.git
 - cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
 - make package/luci-app-clash/compile V=99
+
+- rm -rf $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/luci-app-clash
+- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
+- git clone -b official-openwrt https://github.com/frainzy1477/luci-app-clash.git 
+- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+- make package/luci-app-clash/compile V=99
+
+- rm -rf $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/luci-app-clash
+- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
+- git clone -b koolshare-lede-openwrt https://github.com/frainzy1477/luci-app-clash.git 
+- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+- make package/luci-app-clash/compile V=99
+
 before_deploy: git fetch --tags
 deploy:
   provider: releases
@@ -36,4 +48,4 @@ deploy:
   on:
     tags: true
     repo: frainzy1477/luci-app-clash
-    branch: New-LuciMaster-Lean
+    all_branches: true
