@@ -32,7 +32,7 @@ deploy:
       # Paste here
   skip_cleanup: true
   file_glob: true
-  file: "$TRAVIS_BUILD_DIR/*.ipk"
+  file: "/home/travis/build/frainzy1477/luci-app-clash/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*.ipk"
   on:
     tags: true
     repo: frainzy1477/luci-app-clash
