@@ -16,10 +16,10 @@ install:
 
 script:
 #- git clone https://github.com/frainzy1477/luci-app-clash.git
-- wget -q https://raw.githubusercontent.com/frainzy1477/luci-app-clash/New-LuciMaster-Lean/config -O 2>&1 >1 /home/travis/build/frainzy1477/luci-app-clash/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
-- cd /home/travis/build/frainzy1477/luci-app-clash/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
+- wget -q https://raw.githubusercontent.com/frainzy1477/luci-app-clash/New-LuciMaster-Lean/config -O 2>&1 >1 $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
 - git clone -b New-LuciMaster-Lean https://github.com/frainzy1477/luci-app-clash.git
-- cd /home/travis/build/frainzy1477/luci-app-clash/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+- cd $TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
 - make package/luci-app-clash/compile V=99
 before_deploy: git fetch --tags
 deploy:
@@ -32,7 +32,7 @@ deploy:
       # Paste here
   skip_cleanup: true
   file_glob: true
-  file: "/home/travis/build/frainzy1477/luci-app-clash/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*.ipk"
+  file: "$TRAVIS_BUILD_DIR/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*.ipk"
   on:
     tags: true
     repo: frainzy1477/luci-app-clash
