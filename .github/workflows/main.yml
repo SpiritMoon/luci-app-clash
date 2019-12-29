@@ -29,12 +29,12 @@ jobs:
         cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
         git clone -b New-LuciMaster-Lean https://github.com/frainzy1477/luci-app-clash.git package/luci-app-clash
     
-    - name: Config - copy build config
+    - name: Configure sdk
       run: cp ./config openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
 
-    - name: Download - openwrt build dependencies
+    - name: Build ipk
       run: |
-        cd openwrt-$VERSION
+        cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
         make package/luci-app-clash/compile V=99
 
 
