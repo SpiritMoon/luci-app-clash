@@ -48,7 +48,7 @@ jobs:
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        files: openwrt-${{ env.VERSION }}/bin/packages/x86_64/base/*
+        files: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASES_DEPLOY_TOKEN }}
 
@@ -56,4 +56,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: luci-app-clash
-        path: openwrt-${{ env.VERSION }}/bin/packages/x86_64/base/*
+        path: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*
