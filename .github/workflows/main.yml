@@ -24,13 +24,15 @@ jobs:
         wget $URL
         tar xvJf openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
 
-    - name: Clone - openwrt plugin source
-      run: |
-        cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
-        git clone -b New-LuciMaster-Lean https://github.com/frainzy1477/luci-app-clash.git package/luci-app-clash
     
     - name: Configure sdk
       run: cp ./config openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+      
+    - name: Clone package
+      run: |
+        cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/package/
+        git clone -b New-LuciMaster-Lean https://github.com/frainzy1477/luci-app-clash.git
+
 
     - name: Build ipk
       run: |
