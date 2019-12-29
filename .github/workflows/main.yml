@@ -13,25 +13,24 @@ jobs:
     runs-on: ubuntu-18.04
     
     env:
-      VERSION: sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
       URL: https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
     
     steps:
     - name: Checkout - clone repository
       uses: actions/checkout@v1
     
-    - name: Untar sdk
+    - name: Download and untar sdk
       run: |
         wget $URL
-        tar xvJf openwrt-$VERSION.tar.gz
+        tar xvJf openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
 
     - name: Clone - openwrt plugin source
       run: |
-        cd openwrt-$VERSION
+        cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
         git clone -b openwrt-18.06 https://github.com/frainzy1477/luci-app-clash.git package/luci-theme-rosy
     
     - name: Config - copy build config
-      run: cp ./config openwrt-$VERSION/.config
+      run: cp ./config openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
 
     - name: Download - openwrt build dependencies
       run: |
