@@ -1,0 +1,39 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+    - uses: actions/checkout@vNew-LuciMaster-Lean
+
+
+    - name: Download SDK
+      run: |
+        wget https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+        tar xvJf openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+        
+    - name: Clone & Compile ipk
+      env: 
+        REPO_URL: https://github.com/frainzy1477/luci-app-clash
+        REPO_BRANCH: New-LuciMaster-Lean
+      working-directory: ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+      run: |
+        wget -q https://raw.githubusercontent.com/frainzy1477/luci-app-clash/New-LuciMaster-Lean/config -O 2>&1 >1 ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+        cd package
+        git clone --depth 1 $REPO_URL -b $REPO_BRANCH
+        cd ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+        make package/luci-app-clash/compile V=99
+        
+    - name : Upload artifact
+      uses: actions/upload-artifact@New-LuciMaster-Lean
+      with:
+        name: luci-app-clash
+        path: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*.ipk
+      
+
+      
