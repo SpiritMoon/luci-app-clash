@@ -1,4 +1,4 @@
-name: CI
+name: luci-app-clash
 
 on: [push]
 
@@ -10,8 +10,6 @@ jobs:
     steps:
     - name: Checkout
     - uses: actions/checkout@v1
-
-
     - name: Download SDK
       run: |
         wget https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
@@ -35,14 +33,16 @@ jobs:
 
     - name: Compile ipk
       working-directory: ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
-      run: |
-        make package/luci-app-clash/compile V=99
+      run: make package/luci-app-clash/compile V=99
         
     - name : Upload artifact
-      uses: actions/upload-artifact@New-LuciMaster-Lean
+      uses: actions/upload-artifact@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         name: luci-app-clash
-        path: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*.ipk
-      
+        files:  openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*.ipk
+        draft: true
+        prerelease: true
 
       
