@@ -1,0 +1,59 @@
+name: Luci-app-clash CI
+on:
+  release:
+    types: [push, published]
+  
+  push:
+    branches: 
+      - New-LuciMaster-Lean
+
+      
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    
+    env:
+      VERSION: sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+      URL: https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
+    
+    steps:
+    - name: Checkout - clone repository
+      uses: actions/checkout@v1
+    
+    - name: Install - system build dependencies
+      run: |
+        sudo -E apt update && sudo -E apt upgrade -y
+        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
+    
+    - name: Untar sdk
+      run: |
+        wget $URL
+        tar xvJf openwrt-$VERSION.tar.gz
+
+    - name: Clone - openwrt plugin source
+      run: |
+        cd openwrt-$VERSION
+        git clone -b openwrt-18.06 https://github.com/frainzy1477/luci-app-clash.git package/luci-theme-rosy
+    
+    - name: Config - copy build config
+      run: cp ./config openwrt-$VERSION/.config
+
+    - name: Download - openwrt build dependencies
+      run: |
+        cd openwrt-$VERSION
+        make package/luci-app-clash/compile V=99
+
+
+    - name: Release - push to release file
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: openwrt-${{ env.VERSION }}/bin/packages/x86_64/base/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASES_DEPLOY_TOKEN }}
+
+    - name: Upload - push to artifact file
+      uses: actions/upload-artifact@v1
+      with:
+        name: luci-app-clash
+        path: openwrt-${{ env.VERSION }}/bin/packages/x86_64/base/*
