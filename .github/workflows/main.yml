@@ -11,38 +11,15 @@ jobs:
     - name: Checkout
     - uses: actions/checkout@v1
     - name: Download SDK
-      run: |
-        wget https://downloads.openwrt.org/snapshots/targets/x86/64/openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
-        tar xvJf openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64.tar.xz
-        
     - name: Clone & Compile ipk
       env: 
         REPO_URL: https://github.com/frainzy1477/luci-app-clash
         REPO_BRANCH: New-LuciMaster-Lean
-      working-directory: ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
-      run: |
-        cd package
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH
+      run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH clash
         
     - name: Configure
       env:
         CONFIG_FILE: 'config'
       run: |
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
-      
-
-    - name: Compile ipk
-      working-directory: ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
-      run: make package/luci-app-clash/compile V=99
-        
-    - name : Upload artifact
-      uses: actions/upload-artifact@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        name: luci-app-clash
-        files:  openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*.ipk
-        draft: true
-        prerelease: true
-
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE clash/.config
       
