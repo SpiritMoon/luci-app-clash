@@ -43,17 +43,8 @@ jobs:
         cd openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
         make package/luci-app-clash/compile V=99
 
-
-    - name: Release - push to release file
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASES_DEPLOY_TOKEN }}
-
     - name: Upload - push to artifact file
       uses: actions/upload-artifact@v1
       with:
         name: luci-app-clash
-        path: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base/*
+        file: openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/bin/packages/x86_64/base
