@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - name: Checkout
-    - uses: actions/checkout@vNew-LuciMaster-Lean
+    - uses: actions/checkout@v1
 
 
     - name: Download SDK
@@ -23,10 +23,19 @@ jobs:
         REPO_BRANCH: New-LuciMaster-Lean
       working-directory: ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
       run: |
-        wget -q https://raw.githubusercontent.com/frainzy1477/luci-app-clash/New-LuciMaster-Lean/config -O 2>&1 >1 ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
         cd package
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH
-        cd ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+        
+    - name: Configure
+      env:
+        CONFIG_FILE: 'config'
+      run: |
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64/.config
+      
+
+    - name: Compile ipk
+      working-directory: ./openwrt-sdk-x86-64_gcc-8.3.0_musl.Linux-x86_64
+      run: |
         make package/luci-app-clash/compile V=99
         
     - name : Upload artifact
